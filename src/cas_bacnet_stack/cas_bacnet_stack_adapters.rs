@@ -57,7 +57,12 @@ fn get_extension(system: &str) -> &str {
 // unavailable on some exotic target), this falls back to the bare filename so the OS's normal
 // shared-library search path (PATH / LD_LIBRARY_PATH / rpath) gets a chance.
 fn load_library() -> libloading::Library {
-    let filename = "CASBACnetStack_x64_Release".to_owned() + get_extension(env::consts::OS);
+    // Linux/macOS shared libraries conventionally carry a "lib" prefix (this project's own CI
+    // builds/copies "libCASBACnetStack_x64_Release.so", matching every other *nix .so/.dylib in
+    // this series) - Windows DLLs do not. Found via a real CI failure (the un-prefixed filename
+    // never matched what was actually on disk), not by inspection.
+    let prefix = if env::consts::OS == "windows" { "" } else { "lib" };
+    let filename = format!("{prefix}CASBACnetStack_x64_Release{}", get_extension(env::consts::OS));
     let candidate = env::current_exe()
         .ok()
         .and_then(|exe| exe.parent().map(|dir| dir.join(&filename)));

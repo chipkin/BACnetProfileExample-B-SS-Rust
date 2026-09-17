@@ -71,7 +71,7 @@ jobs:
           $msbuild = & "${env:ProgramFiles(x86)}\Microsoft Visual Studio\Installer\vswhere.exe" `
             -latest -products * -requires Microsoft.Component.MSBuild -find "MSBuild\**\Bin\MSBuild.exe" | Select-Object -First 1
           & $msbuild submodules\cas-bacnet-stack\projects\msvs\BuildCASBACnetStack.sln `
-            /p:Configuration=ReleaseDll /p:Platform=x64 /m
+            /p:Configuration=ReleaseDll /p:Platform=x64 /p:PlatformToolset=v143 /m
           if ($LASTEXITCODE -ne 0) { throw "MSBuild failed with exit code $LASTEXITCODE" }
           Get-ChildItem submodules\cas-bacnet-stack\bin\CASBACnetStack_x64_Release.dll
 

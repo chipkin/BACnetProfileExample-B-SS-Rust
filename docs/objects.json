@@ -1,0 +1,111 @@
+{
+  "objects": [
+    {
+      "type": "Device",
+      "instance": 389001,
+      "name": "Rainbow",
+      "app": [
+        "Object_Name",
+        "Description",
+        "Vendor_Name",
+        "Vendor_Identifier",
+        "Model_Name",
+        "Firmware_Revision",
+        "Application_Software_Version"
+      ],
+      "enabled": [
+        "Description"
+      ],
+      "writable": [],
+      "accepted": [
+        "System_Status",
+        "Max_APDU_Length_Accepted",
+        "Segmentation_Supported",
+        "APDU_Timeout",
+        "Number_Of_APDU_Retries",
+        "Database_Revision"
+      ],
+      "note": "the device itself; the instance is configurable with --deviceID. The stack rows are device-wide facts only the stack knows - the protocol version and revision it implements, the services and object types it was configured with, the live object list and address-binding table. The accepted rows are the stack's configured defaults for APDU limits, segmentation, system status and database revision; an application that answered them from its own constants could contradict the stack, so this example does not",
+      "stack": [
+        "Object_List",
+        "Protocol_Version",
+        "Protocol_Revision",
+        "Protocol_Services_Supported",
+        "Protocol_Object_Types_Supported",
+        "Device_Address_Binding"
+      ]
+    },
+    {
+      "type": "Analog Input",
+      "instance": 1,
+      "name": "Bronze",
+      "app": [
+        "Present_Value",
+        "Object_Name",
+        "Units",
+        "Out_Of_Service"
+      ],
+      "enabled": [],
+      "writable": [],
+      "accepted": [
+        "Event_State"
+      ],
+      "note": "REAL, degrees Celsius; starts at 21.5"
+    },
+    {
+      "type": "Binary Input",
+      "instance": 1,
+      "name": "Emerald",
+      "app": [
+        "Present_Value",
+        "Object_Name",
+        "Polarity",
+        "Out_Of_Service"
+      ],
+      "enabled": [],
+      "writable": [],
+      "accepted": [
+        "Event_State"
+      ],
+      "note": "starts inactive"
+    },
+    {
+      "type": "Multi-state Input",
+      "instance": 1,
+      "name": "Hot Pink",
+      "app": [
+        "Present_Value",
+        "Object_Name",
+        "Number_Of_States",
+        "Out_Of_Service",
+        "State_Text"
+      ],
+      "enabled": [
+        "State_Text"
+      ],
+      "writable": [],
+      "accepted": [
+        "Event_State"
+      ],
+      "note": "state 1 of 3: On, Off, Auto"
+    },
+    {
+      "type": "Network Port",
+      "instance": 1,
+      "name": "Vermilion",
+      "app": [
+        "Object_Name",
+        "Out_Of_Service",
+        "Network_Type",
+        "Protocol_Level",
+        "Changes_Pending"
+      ],
+      "enabled": [],
+      "writable": [],
+      "accepted": [
+        "Reliability"
+      ],
+      "note": "BACnet/IP; Network_Type and Protocol_Level are set from BACnetStack_AddNetworkPortObject()'s arguments (IPv4, BACnet Application) at start-up, not a GetProperty callback like the object's other app-served rows; Changes_Pending is likewise computed and answered natively by the stack's Network Port object. Reliability has no fault condition this example detects, so it is accepted at the generic default (normal)"
+    }
+  ]
+}

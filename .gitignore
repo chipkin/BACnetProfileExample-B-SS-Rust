@@ -1,0 +1,12 @@
+/target
+Cargo.lock.bak
+*.log
+*.pdb
+
+# The native CAS BACnet Stack library, built locally per README.md - never commit a binary
+# artifact of a separately licensed product.
+CASBACnetStack_x64_Release.dll
+CASBACnetStack_x64_Debug.dll
+libCASBACnetStack_x64_Release.so
+libCASBACnetStack_x64_Debug.so
+libCASBACnetStack_x64_Release.dylib

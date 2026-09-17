@@ -1,0 +1,22 @@
+[package]
+name = "bacnet-profile-example-b-ss-rust"
+version = "1.0.0"
+edition = "2021"
+description = "BACnet B-SS (Smart Sensor) profile example - Rust, built on the CAS BACnet Stack"
+license = "CC0-1.0"
+publish = false
+
+[[bin]]
+name = "bacnet-profile-example-b-ss-rust"
+path = "src/main.rs"
+
+# Same dependency set the vendored adapter's own Cargo.toml
+# (submodules/cas-bacnet-stack/adapters/rust/Cargo.toml) pins - matched here rather than
+# re-derived, so a version skew shows up as one number to update in one place.
+[dependencies]
+libloading = "0.8"
+once_cell = "1"
+ctrlc = "3"
+
+[profile.release]
+opt-level = 2

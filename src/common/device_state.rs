@@ -53,10 +53,21 @@ pub struct DeviceState {
     pub ip_address: [u8; 4],
     pub ip_subnet_mask: [u8; 4],
     pub ip_default_gateway: [u8; 4],
+
+    /// The Device object's Firmware_Revision (property 44) - the underlying
+    /// CAS BACnet Stack's own version, NOT this example's version. Built
+    /// once at start-up (in `main()`, right after the native library loads
+    /// successfully) from `BACnetStack_GetAPIMajorVersion`/`MinorVersion`/
+    /// `PatchVersion`/`BuildVersion` - the same four calls
+    /// `cas_example_helper::print_version` already uses for the start-up
+    /// banner. Empty until then; a `Get*Property` callback should never
+    /// observe it empty in practice because `main()` sets it before
+    /// registering any callback or adding the Device object.
+    pub firmware_revision: String,
 }
 
 impl DeviceState {
-    const fn new() -> Self {
+    fn new() -> Self {
         DeviceState {
             device_instance: 389001,
             bacnet_ip_udp_port: 47808,
@@ -64,6 +75,7 @@ impl DeviceState {
             ip_address: [0, 0, 0, 0],
             ip_subnet_mask: [0, 0, 0, 0],
             ip_default_gateway: [0, 0, 0, 0],
+            firmware_revision: String::new(),
         }
     }
 }

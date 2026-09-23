@@ -55,7 +55,7 @@ and who answers it.
 ## The device this example creates
 
 ```
-Device 389001  "Rainbow"   (Vendor 389 - Chipkin Automation Systems)
+Device 389001  "Chipkin Example B-SS"   (Vendor 389 - Chipkin Automation Systems)
     │
     ├── Analog Input 1       "Bronze"      Present_Value  21.5     (REAL, degrees Celsius; read-only)
     ├── Binary Input 1       "Emerald"     Present_Value  inactive (read-only)
@@ -88,7 +88,7 @@ which is the point of a profile example.
 
 | Object type | Instance | Name |
 |-------------|:--------:|------|
-| Device | 389001 | Rainbow |
+| Device | 389001 | Chipkin Example B-SS |
 | Analog Input | 1 | Bronze |
 | Binary Input | 1 | Emerald |
 | Multi-state Input | 1 | Hot Pink |
@@ -232,7 +232,7 @@ Expected output:
 BACnet B-SS (Smart Sensor) Example - Rust v1.0.0 (common v1.0.0)
 CAS BACnet Stack v6.0.21.0
 FYI: listening on <your-ip>:47808 (broadcast <your-subnet-broadcast>)
-FYI: Device 389001 ("Rainbow") ready. Vendor ID 389. Type 'h' + Enter for help.
+FYI: Device 389001 ("Chipkin Example B-SS") ready. Vendor ID 389. Type 'h' + Enter for help.
 ```
 
 The device listens on UDP **47808** (BACnet/IP) by default. Allow that port
@@ -276,10 +276,10 @@ Use a BACnet client such as the
    instance **389001** (vendor **389**). It also broadcasts an I-Am at
    start-up.
 2. **Browse the object model** - the device shows five objects: the Device
-   (`Rainbow`), the three sensors, and the Network Port (`Vermilion`). Reading
+   (`Chipkin Example B-SS`), the three sensors, and the Network Port (`Vermilion`). Reading
    the Device's `Object_List` returns all five.
 3. **Read the Device** - ReadProperty `389001` -> `Object_Name` returns
-   `"Rainbow"`; `Protocol_Revision` returns `24`; `Description` returns the
+   `"Chipkin Example B-SS"`; `Protocol_Revision` returns `24`; `Description` returns the
    profile description string.
 4. **Read a sensor** - ReadProperty Analog Input `1` -> `Present_Value`
    returns `21.5`; `Units` returns `degrees-Celsius`; `Out_Of_Service` returns

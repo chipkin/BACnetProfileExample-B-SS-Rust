@@ -1,6 +1,6 @@
 [package]
 name = "bacnet-profile-example-b-ss-rust"
-version = "1.0.1"
+version = "1.0.2"
 edition = "2021"
 description = "BACnet B-SS (Smart Sensor) profile example - Rust, built on the CAS BACnet Stack"
 license = "CC0-1.0"

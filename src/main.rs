@@ -54,7 +54,7 @@
 // object that every BACnet device must have. Each object is given a colour name
 // (a convention shared across this example series):
 //
-//     Device 389001          "Rainbow"    (instance configurable with --deviceID)
+//     Device 389001          "Chipkin Example B-SS"    (instance configurable with --deviceID)
 //     Analog Input  1        "Bronze"     (REAL, degrees Celsius; starts at 21.5)
 //     Binary Input  1        "Emerald"    (active / inactive)
 //     Multi-State Input 1    "Hot Pink"   (an enumerated state, 1..3)
@@ -98,7 +98,7 @@ use common::device_state::STATE;
 // 1. Example + device configuration
 // -----------------------------------------------------------------------------
 const APP_NAME: &str = "BACnet B-SS (Smart Sensor) Example - Rust";
-const APP_VERSION: &str = "1.0.1";
+const APP_VERSION: &str = "1.0.2";
 
 // ---- Device identity: CHANGE ALL OF THIS BEFORE YOU SHIP --------------------
 // Everything in this block is read by clients and shown to the operator in
@@ -120,11 +120,11 @@ const VENDOR_IDENTIFIER: u32 = 389;
 // whole BACnet internetwork, and here it is a COMPILE-TIME constant. The
 // device instance is runtime-configurable via --deviceID, so it is easy to
 // ship two units, configure their instances correctly, and still have BOTH
-// announce Object_Name "Rainbow" - a spec violation, and a hard BTL failure.
+// announce Object_Name "Chipkin Example B-SS" - a spec violation, and a hard BTL failure.
 // In a real product Object_Name must be per-unit configurable too: derive it
 // from a serial number, DIP switches, a config file, or add a --deviceName
 // argument.
-const DEVICE_NAME: &str = "Rainbow";
+const DEVICE_NAME: &str = "Chipkin Example B-SS";
 
 // The Device object's Description. Change it to what YOUR device actually is;
 // this string describes this tutorial.

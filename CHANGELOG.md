@@ -6,6 +6,40 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.1.0/),
 and this project adheres to
 [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [1.0.2] - unreleased
+
+### Changed
+
+- **Device renamed from the series' colour placeholder "Rainbow" to "Chipkin
+  Example B-SS"** so devices from different examples in the series are
+  distinguishable from each other on the same BACnet network - every example
+  previously announced the identical Object_Name "Rainbow", which made two
+  examples on one subnet indistinguishable by name. Sub-object names are
+  unchanged. `docs/colour-table.md` (series root) updated to match.
+  APP_VERSION bumped 1.0.1 -> 1.0.2.
+
+## [1.0.1] - 2026-09-22
+
+### Fixed
+
+- `Application_Software_Version` (12) and `Firmware_Revision` (44) were
+  hardcoded `"1.0.0"` constants that never tracked reality - the same class
+  of bug just found and fixed in the sibling C++ example
+  (BACnetProfileExample-B-SCHUB-CPP) by someone reading a real device with
+  CAS BACnet Explorer and noticing the reported version didn't match the
+  running build. `Application_Software_Version` now reads `APP_VERSION`
+  directly (the same constant `--version`'s own banner uses - one source of
+  truth, can't drift again). `Firmware_Revision` is now built once at
+  start-up, in `main()` right after the native library loads, from the CAS
+  BACnet Stack's own `BACnetStack_GetAPIMajorVersion`/`MinorVersion`/
+  `PatchVersion`/`BuildVersion` - the same four calls
+  `cas_example_helper::print_version` already uses for the start-up banner -
+  and stored in `STATE.firmware_revision` (the existing
+  `once_cell`-backed `Mutex<DeviceState>` pattern already used for
+  start-up-resolved fields like the Network Port's IP addressing).
+  `Firmware_Revision` was never meant to be this example's own version; it
+  names the platform underneath the app.
+
 ## [1.0.0] - 2026-09-16
 
 ### Added

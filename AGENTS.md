@@ -101,7 +101,7 @@ TUTORIAL.md "Interactive commands are a simplification"): `h` help, `q` quit,
 
 ## Conventions
 
-- Device is named "Rainbow"; objects use the series' colour names; vendor id
+- Device is named "Chipkin Example B-SS"; objects use the series' colour names; vendor id
   389.
 - Implement **only** the services and objects the B-SS profile requires -
   but expose **every required property** of each object.

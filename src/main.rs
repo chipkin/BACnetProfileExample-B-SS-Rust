@@ -54,7 +54,7 @@
 // object that every BACnet device must have. Each object is given a colour name
 // (a convention shared across this example series):
 //
-//     Device 389001          "Rainbow"    (instance configurable with --deviceID)
+//     Device 389001          "Chipkin Example B-SS"    (instance configurable with --deviceID)
 //     Analog Input  1        "Bronze"     (REAL, degrees Celsius; starts at 21.5)
 //     Binary Input  1        "Emerald"    (active / inactive)
 //     Multi-State Input 1    "Hot Pink"   (an enumerated state, 1..3)
@@ -98,7 +98,7 @@ use common::device_state::STATE;
 // 1. Example + device configuration
 // -----------------------------------------------------------------------------
 const APP_NAME: &str = "BACnet B-SS (Smart Sensor) Example - Rust";
-const APP_VERSION: &str = "1.0.0";
+const APP_VERSION: &str = "1.0.2";
 
 // ---- Device identity: CHANGE ALL OF THIS BEFORE YOU SHIP --------------------
 // Everything in this block is read by clients and shown to the operator in
@@ -120,11 +120,11 @@ const VENDOR_IDENTIFIER: u32 = 389;
 // whole BACnet internetwork, and here it is a COMPILE-TIME constant. The
 // device instance is runtime-configurable via --deviceID, so it is easy to
 // ship two units, configure their instances correctly, and still have BOTH
-// announce Object_Name "Rainbow" - a spec violation, and a hard BTL failure.
+// announce Object_Name "Chipkin Example B-SS" - a spec violation, and a hard BTL failure.
 // In a real product Object_Name must be per-unit configurable too: derive it
 // from a serial number, DIP switches, a config file, or add a --deviceName
 // argument.
-const DEVICE_NAME: &str = "Rainbow";
+const DEVICE_NAME: &str = "Chipkin Example B-SS";
 
 // The Device object's Description. Change it to what YOUR device actually is;
 // this string describes this tutorial.
@@ -134,8 +134,16 @@ const DEVICE_DESCRIPTION: &str = "Chipkin CAS BACnet Stack example - B-SS (Smart
 // Device identity strings (read by clients, and used to populate I-Am).
 const VENDOR_NAME: &str = "Chipkin Automation Systems";
 const MODEL_NAME: &str = "CAS BACnet Stack Example - B-SS";
-const FIRMWARE_REVISION: &str = "1.0.0";
-const APPLICATION_SOFTWARE_VERSION: &str = "1.0.0";
+// Firmware_Revision (44) and Application_Software_Version (12) are NOT
+// consts: they must track reality, not a value someone typed once and
+// forgot. Application_Software_Version is this example's own APP_VERSION
+// (declared above) - the one source of truth also used by --version's
+// banner. Firmware_Revision names the platform underneath this app, not
+// the app itself: it is the CAS BACnet Stack's own version, computed once
+// at start-up into STATE.firmware_revision (see device_state.rs) from the
+// stack's BACnetStack_GetAPIMajorVersion/Minor/Patch/BuildVersion calls -
+// the same four calls cas_example_helper::print_version already makes for
+// the start-up banner.
 
 // The sensor objects (all instance 1) and their colour names.
 const ANALOG_INPUT_INSTANCE: u32 = 1; // "Bronze"
@@ -532,9 +540,9 @@ extern "C" fn get_property_character_string(
             } else if property_identifier == c::PROPERTY_IDENTIFIER_MODEL_NAME {
                 Some(MODEL_NAME)
             } else if property_identifier == c::PROPERTY_IDENTIFIER_FIRMWARE_REVISION {
-                Some(FIRMWARE_REVISION)
+                Some(state.firmware_revision.as_str())
             } else if property_identifier == c::PROPERTY_IDENTIFIER_APPLICATION_SOFTWARE_VERSION {
-                Some(APPLICATION_SOFTWARE_VERSION)
+                Some(APP_VERSION)
             } else {
                 None
             };
@@ -706,6 +714,23 @@ fn main() -> std::process::ExitCode {
     }
     if want_version_only {
         return std::process::ExitCode::SUCCESS;
+    }
+
+    // Firmware_Revision (44) is the CAS BACnet Stack's own version, not this
+    // example's - see the comment above FIRMWARE_REVISION's old const
+    // (removed) near APP_VERSION. Compute it once here, now that the native
+    // library has definitely loaded (the print_version() call above forced
+    // that), using the same four API calls print_version() uses for the
+    // start-up banner.
+    {
+        let mut state = STATE.lock().unwrap_or_else(|e| e.into_inner());
+        state.firmware_revision = format!(
+            "{}.{}.{}.{}",
+            bacnet::BACnetStack_GetAPIMajorVersion().unwrap_or(0),
+            bacnet::BACnetStack_GetAPIMinorVersion().unwrap_or(0),
+            bacnet::BACnetStack_GetAPIPatchVersion().unwrap_or(0),
+            bacnet::BACnetStack_GetAPIBuildVersion().unwrap_or(0),
+        );
     }
 
     // --- Bind the BACnet/IP socket -------------------------------------------
